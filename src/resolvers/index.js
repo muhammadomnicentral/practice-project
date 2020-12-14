@@ -1,5 +1,5 @@
-//const Member = require('../models/Member');
-const Member = require("../../models/Member");
+const Member = require('../models/Member');
+
 async function membersFromDB(){
   members = await Member.findAll()
   .then((member) => member)

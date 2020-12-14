@@ -2,7 +2,7 @@ const express = require("express");
 const mem_router = express.Router();
 //const mem = require("../members");
 //const db = require("../config/database");
-const Member = require("../../models/Member");
+const Member = require("../models/Member");
 
 //get all members
 mem_router.get("/", (req, res) =>
