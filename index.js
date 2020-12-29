@@ -1,26 +1,18 @@
-const express = require("express");
-const logger_middleware = require("./src/middlewares/logger");
-//const db = require("./models/database");
-//const db = require("./src/config/database");
-const { ApolloServer, gql } = require("apollo-server");
-const typeDefs = require("./src/resolvers/schema");
-const resolvers = require("./src/resolvers/index");
-const app = express();
+require('dotenv').config();
 
-//middlewares
-app.use(logger_middleware);
-app.use(express.json()); // to handle raw json data
-app.use(express.urlencoded({ extended: false })); // for form submission and extended: false to handle url encoded data
+const server = require('./api/server');
+const port = process.env.PORT || 1234;
 
-
-const server = new ApolloServer({ typeDefs, resolvers });
-server.listen().then(({ url }) => {
-  console.log(`GraphQL Server ready at ${url}`);
+process.on('uncaughtException', (err) => {
+  console.error(`${(new Date()).toUTCString()} uncaughtException:`, err);
+  process.exit(0);
 });
 
-app.use("/", require("./src/routes/helloworld"));
-app.use("/members/", require("./src/routes/member"));
+process.on('unhandledRejection', (err) => {
+  console.error(`${(new Date()).toUTCString()} unhandledRejection:`, err);
+});
 
-const PORT = process.env.PORT || 1234;
 
-app.listen(PORT, () => console.log(`Server is Listening at ${PORT}`));
+server.listen({ port }, () => {
+  console.log(`GraphQL Server ready at http://localhost:${port}/`);
+});
